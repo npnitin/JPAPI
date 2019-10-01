@@ -5,3 +5,23 @@ script: ./mvnw clean install
 
 notifications:
   email: achievers.nitin@gmail.com
+  
+  
+sudo: required
+ 
+services:
+  - docker
+  
+env:
+  global:
+    - secure: "U0CIMH44hk4byW7dNhF+lgZCzrgipWnao5OZXM9TCwrbXacvUgYl0dC2xg8ulXduf71F1jptzpoV/QkmW6XmxZt+ssYVnt+Ih9mp9k0bS7IcdNATwgj7g4+SCDotbVdk2tNzxSBx112LgVqrZJZH846GPLTblRYRzhkEjxOx92Fm6ppxumfkXvlEgNc+h1B0NgIJmquzGWB7EsCp7RVqgUhqU5/F3g3RNC/57igD9KBkehP9Sy00nieeqNgnzLrTHudsxj5Vyzvn1z/rK4U7Qk6mpmHNxgvjM5HOPWEF7kyL23vvZw9DtD15hTFs9WBYHK3vzd2Aejay1FIolmjR5BfFGMXsamtaZ/tyWdSbU9EOeF4oGjI/sHKKLBZ+jU2OVBV5ZcmxqgkVrKV2HMkgqHGWIvOfKcBV0fDKftSMxKk/sM39aqyvLmxtpOZtkP+EhInXRfTVdWCWoiZnIli5KpToSu6KgTcyRYygkz1d1OPDDi+kbgUNJad5ngriEiUtf1bnwPTSnacrjoNe9k5cyORo0au6H4POATVByLxdl+PMhs6cuYTxwp9YZLVgJQ+RXAcgjFv2OuB9e9U4Br/A/fCV4LJyy0QEz/srmwtDGLqfFU+2ufZ2DZacebcARtD+3eMaSFqAC7x7YeCeWPq69PRzaQh/f9qvLhqBvIiGWTQ="
+    - secure: "Hn8xF5USo0R/tHjTu2KOKYIOHmQLpTCdOjuuxxyW3CEftCpwMUcujE6tiODjBuBBd1RlI8vD3VDjYK4beEbxtL4aItGAZLpkCH3mFynXHXHQiIlbg1iNGrkb9R9TM8nBvfGc+ZBTvJS69nq5ceu6IGdII0teAYQCPBj7NZbB5VUfImZWp05Jy9ufu+UKlX3NlFCOJHVNS+7NxmfDYt/pl+c0T6DKznP4PWUIP9eRaJ8sSa74VNtQOBTD3czF070c03hXogWMqAsi6jco1Nd6q/J0asdafqGeIMv0X8j+w1oaXJtfutyxTI/+KY8hSoyQo5uw4KxN8gUZoRxHOhPjJLWXSRQHbCtz+0HrapB20gad4mPstQZBbKFTKAsOdHE7PrEhpJmVXfQdB1Fd8Utpiu3YjTaHoOBY29/99gUVDwgRj+NJvdvF+eg23xYlYSmC7YLDnQkGpkrah+ggKz776cFXut7H9YnIJQJDiJgasxN5/LwajVao8DrjBRxSqu1guSp2+r2GdVLTPq8vzw9aqFZEjjiO35XfT+Cy6NTq8LOJVinzGMjKZtABgx6IOBHMRSg8/db76ogr+TlJLu6pBTih2Hk9K/xvdiWbxnqBgmtC50+2ClMc/RWTkByk3FY5ZoCyYjIvazo2GQiwapp3olpIgdb7NymzclqmoNxs0A8="
+    - COMMIT=${TRAVIS_COMMIT::7}
+    
+after_success:
+  - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH; fi`
+  - export IMAGE_NAME=sivaprasadreddy/jblogger
+  - docker build -t $IMAGE_NAME:$COMMIT .
+  - docker tag $IMAGE_NAME:$COMMIT $IMAGE_NAME:$TAG
+  - docker push $IMAGE_NAME
