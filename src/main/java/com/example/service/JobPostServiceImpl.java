@@ -105,17 +105,17 @@ public class JobPostServiceImpl implements JobPostService {
                 "<html>" +
                 "<body border=//'solid black//'>" +
                 "<h3>Hi "+jobPost.getPosterName() + " ,</h3>" +
-                "<h4>Greetings from NaukriRefer</h4>" +
-                "<h4>One applicant applied for job you posted on NaukriRefer</h4>"+
+                "<h4>Greetings from ReferralJobz</h4>" +
+                "<h4>One applicant applied for job you posted on ReferralJobz</h4>"+
                 "<h4>Job Title:"+jobPost.getJobTitle()+" for "+jobPost.getCompany()+" company at "+jobPost.getCity()+"</h4>"+
                 "<h4>Please find the attached resume of the applicant.</h4>"+
                 "<br/>"+
                 "<h4>Thank you,</h4>"+
-                "<h4>NaukriRefer Team</h4>"+
+                "<h4>ReferralJobz Team</h4>"+
                 "</body>" +
                 "</html>", true);
         helper.addAttachment(file.getOriginalFilename(), file);
-        helper.setSubject("NaukriRefer Alerts");
+        helper.setSubject("ReferralJobz Alerts");
         javaMailSender.send(message);
         return true;
     }
