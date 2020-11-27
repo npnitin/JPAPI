@@ -125,6 +125,11 @@ public class JobPostServiceImpl implements JobPostService {
         return jobPostRepository.findByPosterEmail(email);
     }
 
+    @Override
+    public JobPost getById(String id) {
+        return jobPostRepository.findById(id).get();
+    }
+
     private String capitalizeAll(String str) {
         if (str == null || str.isEmpty()) {
             return str;

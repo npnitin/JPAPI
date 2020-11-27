@@ -35,6 +35,10 @@ public class JobPostController {
         JobPost jobPost1 = jobPostService.addJobPost(jobPost);
         return new ResponseEntity<>(jobPost1, HttpStatus.OK);
     }
+    @GetMapping
+    public JobPost getById(@RequestParam("id") String id){
+        return jobPostService.getById(id);
+    }
     @PostMapping("/search")
     public List<JobPost> searchJobs(@RequestParam("city") String city,
                                     @RequestParam("skill") String skill,
