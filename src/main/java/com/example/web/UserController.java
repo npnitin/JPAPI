@@ -25,10 +25,13 @@ public class UserController {
 
         return userService.createUser(user);
     }
+    @PostMapping("/update")
+    public User updateUser(@RequestBody User user){
+        return userService.update(user);
+    }
 
     @PostMapping("/login")
     public User doLogin(@RequestBody User user) throws InvalidCredentials {
-
         return userService.doLoin(user);
     }
 }

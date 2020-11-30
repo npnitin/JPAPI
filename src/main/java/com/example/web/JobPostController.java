@@ -63,4 +63,9 @@ public class JobPostController {
     public List<JobPost> getJobSByEmail(@RequestParam("email") String email){
         return jobPostService.getByEmail(email);
     }
+
+    @GetMapping("/applyforjob")
+    public String applyForJob(@RequestParam("jobId") String jobId,@RequestParam("userId") String userId){
+        return jobPostService.applyForJob(jobId,userId);
+    }
 }

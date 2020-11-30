@@ -15,4 +15,5 @@ public interface JobPostService {
      boolean sendMail(MultipartFile multipartFile,String jobId) throws MessagingException;
      List<JobPost> getByEmail(String email);
      JobPost getById(String id);
+     String applyForJob(String jobId, String userId);
 }

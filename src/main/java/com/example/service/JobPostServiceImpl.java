@@ -1,7 +1,9 @@
 package com.example.service;
 
 import com.example.models.JobPost;
+import com.example.models.User;
 import com.example.repository.JobPostRepository;
+import com.example.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +28,9 @@ public class JobPostServiceImpl implements JobPostService {
 
     @Autowired
     JobPostRepository jobPostRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     MongoTemplate mongoTemplate;
@@ -130,6 +135,18 @@ public class JobPostServiceImpl implements JobPostService {
         return jobPostRepository.findById(id).get();
     }
 
+    @Override
+    public String applyForJob(String jobId, String userId) {
+        JobPost jobPost = jobPostRepository.findById(jobId).get();
+        User user = userRepository.findById(userId).get();
+        try {
+            sendMail(jobPost,user.getResumeUrl());
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        return "success";
+    }
+
     private String capitalizeAll(String str) {
         if (str == null || str.isEmpty()) {
             return str;
@@ -137,5 +154,27 @@ public class JobPostServiceImpl implements JobPostService {
 
        return str.substring(0,1).toUpperCase() + str.substring(1).toLowerCase();
 
+    }
+    private void sendMail(JobPost jobPost,String resumeLink) throws MessagingException {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setTo(jobPost.getPosterEmail());
+        helper.setText(
+                "<html>" +
+                        "<body border=//'solid black//'>" +
+                        "<div style='border-style:solid;border-width:thin;border-color:#dadce0;border-radius:8px;padding:40px 20px'>"+
+                        "<h3>Hi "+jobPost.getPosterName() + " ,</h3>" +
+                        "<h4>Greetings from ReferralJobz</h4>" +
+                        "<h4>One applicant applied for job you posted on ReferralJobz</h4>"+
+                        "<h4>Job Title:"+jobPost.getJobTitle()+" for "+jobPost.getCompany()+" company at "+jobPost.getCity()+"</h4>"+
+                        "<h4>Here is download resume link of the applicant:</h4>"+"<a href=\""+resumeLink+"\" target=\"_blank\">Download Resume</a>"+
+                        "<br/>"+
+                        "<h4>Thank you,</h4>"+
+                        "<h4>ReferralJobz Team</h4>"+
+                        "</div>"+
+                        "</body>" +
+                        "</html>", true);
+        helper.setSubject("ReferralJobz Alerts");
+        javaMailSender.send(message);
     }
 }

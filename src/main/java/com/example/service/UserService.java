@@ -8,5 +8,5 @@ public interface UserService {
 
     public User createUser(User user) throws UserAlreadyExistsWithEmail;
     public User doLoin(User user) throws InvalidCredentials;
-
+    public User update(User user);
 }

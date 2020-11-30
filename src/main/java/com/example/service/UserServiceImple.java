@@ -32,4 +32,9 @@ public class UserServiceImple implements UserService {
         }
        throw new InvalidCredentials("Invalid credentials");
     }
+
+    @Override
+    public User update(User user) {
+        return userRepository.save(user);
+    }
 }
