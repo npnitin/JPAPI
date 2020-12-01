@@ -34,9 +34,10 @@ public class Test {
                 localFile.getName(),
                 DataSource.create(localFile)
                 ).execute();
-        System.out.println(uploadedFile.createFileLink().urls());
+        FileLink downloadLink = apiClient.createFileLink(uploadedFile, DownloadOptions.DEFAULT).execute();
+        System.out.print(downloadLink.bestUrl());
 
-        RemoteFolder folder = apiClient.listFolder(RemoteFolder.ROOT_FOLDER_ID).execute();
+        RemoteFolder folder = apiClient.listFolder(7791638340l).execute();
         System.out.println(folder.children());
 
     }

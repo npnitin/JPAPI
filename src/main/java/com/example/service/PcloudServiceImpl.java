@@ -38,9 +38,11 @@ public class PcloudServiceImpl implements  PcloudService {
                 DataSource.create(file.getBytes())
         ).execute();
         if(type == PcloudConstants.RESUME_UPLOAD){
-            user.setResumeUrl(uploadedFile.createFileLink().urls().get(1).toString());
+            FileLink downloadLink = getApiClient().createFileLink(uploadedFile, DownloadOptions.DEFAULT).execute();
+            user.setResumeUrl(downloadLink.bestUrl().toString());
         }else if(type == PcloudConstants.PROFILE_PHOTO_UPLOAD){
-            user.setProfilePhotoUrl(uploadedFile.createFileLink().urls().get(1).toString());
+            FileLink downloadLink = getApiClient().createFileLink(uploadedFile, DownloadOptions.DEFAULT).execute();
+            user.setProfilePhotoUrl(downloadLink.bestUrl().toString());
         }
         userRepository.save(user);
     }
