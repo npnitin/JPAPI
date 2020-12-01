@@ -34,7 +34,34 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson-parent</artifactId>
+			<version>2.8.5</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/gson-2.8.5.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.java.core</groupId>
+			<artifactId>java-core</artifactId>
+			<version>1.1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/java-core-1.1.0.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.okhttp</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>3.11.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/okhttp-3.11.0.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.okio</groupId>
+			<artifactId>oki0</artifactId>
+			<version>2.9.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/okio-2.9.0.jar</systemPath>
+		</dependency>
 
 
 		<dependency>
@@ -88,7 +115,12 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<includeSystemScope>true</includeSystemScope>
+				</configuration>
+
 			</plugin>
+
 			<plugin>
 				<groupId>com.mysema.maven</groupId>
 				<artifactId>apt-maven-plugin</artifactId>
@@ -107,6 +139,7 @@
 					</execution>
 				</executions>
 			</plugin>
+
 			<plugin>
 				<groupId>org.jetbrains.kotlin</groupId>
 				<artifactId>kotlin-maven-plugin</artifactId>
