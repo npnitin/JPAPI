@@ -39,10 +39,10 @@ public class PcloudServiceImpl implements  PcloudService {
         ).execute();
         if(type == PcloudConstants.RESUME_UPLOAD){
             FileLink downloadLink = getApiClient().createFileLink(uploadedFile, DownloadOptions.DEFAULT).execute();
-            user.setResumeUrl(downloadLink.bestUrl().toString());
+            user.setResumeUrl("https://c132.pcloud.com/dHZ1lh0kWZvNRnQeZZZqWmVG7Z2ZZkyFZkZ4rSLXZ0y0IpsfX7iVQFOOoYoXl5RGMV4lV/"+uploadedFile.name());
         }else if(type == PcloudConstants.PROFILE_PHOTO_UPLOAD){
             FileLink downloadLink = getApiClient().createFileLink(uploadedFile, DownloadOptions.DEFAULT).execute();
-            user.setProfilePhotoUrl(downloadLink.bestUrl().toString());
+            user.setProfilePhotoUrl("https://c437.pcloud.com/dpZfBHLkWZRexAmeZuy2z7ZZfhbVG7Z2ZZkyFZZY8PRePF41JFUGdpvKERjOmUPjizy/"+uploadedFile.name());
         }
         userRepository.save(user);
     }

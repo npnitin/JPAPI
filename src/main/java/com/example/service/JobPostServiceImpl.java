@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -156,10 +157,9 @@ public class JobPostServiceImpl implements JobPostService {
 
     }
     private void sendMail(JobPost jobPost,String resumeLink) throws MessagingException {
-        MimeMessage message = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        helper.setTo(jobPost.getPosterEmail());
-        helper.setText(
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(jobPost.getPosterEmail());
+        message.setText(
                 "<html>" +
                         "<body border=//'solid black//'>" +
                         "<div style='border-style:solid;border-width:thin;border-color:#dadce0;border-radius:8px;padding:40px 20px'>"+
@@ -173,8 +173,8 @@ public class JobPostServiceImpl implements JobPostService {
                         "<h4>ReferralJobz Team</h4>"+
                         "</div>"+
                         "</body>" +
-                        "</html>", true);
-        helper.setSubject("ReferralJobz Alerts");
+                        "</html>");
+        message.setSubject("ReferralJobz Alerts");
         javaMailSender.send(message);
     }
 }
