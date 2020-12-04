@@ -34,4 +34,9 @@ public class UserController {
     public User doLogin(@RequestBody User user) throws InvalidCredentials {
         return userService.doLoin(user);
     }
+    @GetMapping("/validateEmail/{userId}")
+    public String validateEmail(@PathVariable("userId") String userId){
+        userService.activateUser(userId);
+        return "https://referraljobz.com";
+    }
 }
