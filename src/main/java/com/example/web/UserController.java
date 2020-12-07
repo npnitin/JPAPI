@@ -4,8 +4,11 @@ import com.example.exceptions.InvalidCredentials;
 import com.example.exceptions.UserAlreadyExistsWithEmail;
 import com.example.models.User;
 import com.example.service.UserService;
+import com.pcloud.sdk.ApiError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -31,7 +34,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public User doLogin(@RequestBody User user) throws InvalidCredentials {
+    public User doLogin(@RequestBody User user) throws InvalidCredentials, IOException, ApiError {
         return userService.doLoin(user);
     }
     @GetMapping("/validateEmail/{userId}")
