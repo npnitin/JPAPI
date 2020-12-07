@@ -16,9 +16,10 @@ public class Test {
                 .authenticator(Authenticators.newOAuthAuthenticator("uy2z7ZAPC048V3lekZb58kG7Z3YQEF47DVVVue3EzT8SB5jhfv0kX")).create();
 
 
-        File localFile = new File("D:\\Projects\\Jobportal\\Bhushan_Gadekar.pdf");
-      //  uploadFile(apiClient, localFile);
-        RemoteFile file =upload(apiClient,localFile);
+        File localFile = new File("D:\\Projects\\Jobportal\\0.jpg");
+        //upload(apiClient, localFile);
+        FileLink link = apiClient.createFileLink(26587183093l,DownloadOptions.DEFAULT).execute();
+        System.out.println(link.bestUrl());
 
 
     }
@@ -35,15 +36,12 @@ public class Test {
 
     private static RemoteFile upload(ApiClient apiClient, File localFile) throws IOException, ApiError {
        RemoteFile uploadedFile = apiClient.createFile(
-               7791638340l,
+               7791712978l,
                 localFile.getName(),
                 DataSource.create(localFile)
                 ).execute();
         FileLink downloadLink = apiClient.createFileLink(uploadedFile, DownloadOptions.DEFAULT).execute();
 
-
-        RemoteFolder folder = apiClient.listFolder(7791638340l).execute();
-        System.out.println(folder.children());
     return  uploadedFile;
     }
 }

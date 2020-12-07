@@ -4,10 +4,13 @@ import com.example.exceptions.InvalidCredentials;
 import com.example.exceptions.UserAlreadyExistsWithEmail;
 import com.example.models.User;
 import com.example.repository.UserRepository;
+import com.pcloud.sdk.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Service
 public class UserServiceImple implements UserService {
@@ -45,7 +48,7 @@ public class UserServiceImple implements UserService {
                             "<h4>Greetings from ReferralJobz</h4>" +
                             "<h4>Thanks for registering with ReferralJobz platform.</h4>"+
                             "<h4>Click on the below link for activation.</h4>"+
-                            "<h4><a href=\""+validationUrl+"\" target=\"_blank\">Activate My Account</a>"+
+                            "<h4><a href=\""+validationUrl+"\" target=\"_blank\">Activate My Account</a></h4>"+
                             "<br/>"+
                             "<h4>Thank you,</h4>"+
                             "<h4>ReferralJobz Team</h4>"+
@@ -58,10 +61,19 @@ public class UserServiceImple implements UserService {
     }
 
     @Override
-    public User doLoin(User user) throws InvalidCredentials {
+    public User doLoin(User user) throws InvalidCredentials, IOException, ApiError {
+        ApiClient apiClient = PCloudSdk.newClientBuilder()
+                .authenticator(Authenticators.newOAuthAuthenticator("uy2z7ZAPC048V3lekZb58kG7Z3YQEF47DVVVue3EzT8SB5jhfv0kX")).create();
 
         User existingUser = userRepository.findByEmailAndPassword(user.getEmail(),user.getPassword());
         if(null!=existingUser){
+            long resumeFileId = Long.valueOf(existingUser.getResumeUrl());
+            FileLink link = apiClient.createFileLink(resumeFileId, DownloadOptions.DEFAULT).execute();
+            existingUser.setResumeUrl(link.bestUrl().toString());
+
+            long profilePhotoFileId = Long.valueOf(existingUser.getProfilePhotoUrl());
+            link = apiClient.createFileLink(profilePhotoFileId, DownloadOptions.DEFAULT).execute();
+            existingUser.setProfilePhotoUrl(link.bestUrl().toString());
             return existingUser;
         }
        throw new InvalidCredentials("Invalid credentials");
