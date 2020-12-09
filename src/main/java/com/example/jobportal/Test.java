@@ -21,6 +21,8 @@ public class Test {
         FileLink link = apiClient.createFileLink(26587183093l,DownloadOptions.DEFAULT).execute();
         System.out.println(link.bestUrl());
 
+        File file = new File("https://c88.pcloud.com/dpZ1lh0kWZ9DrLDeZuy2z7ZZWfY5G7Z1ZZvLZZ8z17p0GbLWSXeRHtuQd3VFVPKATk/Bhushan_Gadekar%20%287%29.pdf");
+
 
     }
 
