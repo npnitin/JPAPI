@@ -67,13 +67,18 @@ public class UserServiceImple implements UserService {
 
         User existingUser = userRepository.findByEmailAndPassword(user.getEmail(),user.getPassword());
         if(null!=existingUser){
-            long resumeFileId = Long.valueOf(existingUser.getResumeUrl());
-            FileLink link = apiClient.createFileLink(resumeFileId, DownloadOptions.DEFAULT).execute();
-            existingUser.setResumeUrl(link.bestUrl().toString());
+            if(null != existingUser.getResumeUrl()){
+                long resumeFileId = Long.valueOf(existingUser.getResumeUrl());
+                FileLink link = apiClient.createFileLink(resumeFileId, DownloadOptions.DEFAULT).execute();
+                existingUser.setResumeUrl(link.bestUrl().toString());
+            }
 
-            long profilePhotoFileId = Long.valueOf(existingUser.getProfilePhotoUrl());
-            link = apiClient.createFileLink(profilePhotoFileId, DownloadOptions.DEFAULT).execute();
-            existingUser.setProfilePhotoUrl(link.bestUrl().toString());
+            if(null != existingUser.getResumeUrl()){
+                long profilePhotoFileId = Long.valueOf(existingUser.getProfilePhotoUrl());
+                FileLink link = apiClient.createFileLink(profilePhotoFileId, DownloadOptions.DEFAULT).execute();
+                existingUser.setProfilePhotoUrl(link.bestUrl().toString());
+            }
+
             return existingUser;
         }
        throw new InvalidCredentials("Invalid credentials");

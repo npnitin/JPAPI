@@ -7,6 +7,7 @@ import com.example.service.UserService;
 import com.pcloud.sdk.ApiError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,8 +16,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -73,9 +76,14 @@ public class UserController {
                 .body(resource);
     }
     @GetMapping("/resume")
-    public ResponseEntity<Void> getResume(@RequestParam("path") String resumePath) throws IOException {
-        return ResponseEntity.status(HttpStatus.FOUND)
-                .location(URI.create(resumePath))
-                .build();
+    public ResponseEntity<Resource> getResume(@RequestParam("path") String resumePath) throws IOException {
+       File file = new File(resumePath);
+       URL url = new URL(resumePath);
+        InputStreamResource resource = new InputStreamResource(url.openStream());
+
+        return ResponseEntity.ok()
+                .contentLength(resumePath.length())
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
     }
 }
