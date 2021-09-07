@@ -16,4 +16,5 @@ public interface JobPostService {
      List<JobPost> getByEmail(String email);
      JobPost getById(String id);
      String applyForJob(String jobId, String userId);
+     void deleteJobPost(String id);
 }

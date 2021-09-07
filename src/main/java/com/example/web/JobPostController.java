@@ -29,11 +29,15 @@ public class JobPostController {
     @Autowired
     JobPostService jobPostService;
 
-
     @PostMapping
     public ResponseEntity<JobPost> addJobPOst(@RequestBody JobPost jobPost){
         JobPost jobPost1 = jobPostService.addJobPost(jobPost);
         return new ResponseEntity<>(jobPost1, HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public void deleteJobPost(@RequestParam("id") String id){
+        jobPostService.deleteJobPost(id);
     }
     @GetMapping
     public JobPost getById(@RequestParam("id") String id){

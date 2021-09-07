@@ -148,6 +148,11 @@ public class JobPostServiceImpl implements JobPostService {
         return "success";
     }
 
+    @Override
+    public void deleteJobPost(String id) {
+        jobPostRepository.deleteById(id);
+    }
+
     private String capitalizeAll(String str) {
         if (str == null || str.isEmpty()) {
             return str;
@@ -157,9 +162,10 @@ public class JobPostServiceImpl implements JobPostService {
 
     }
     private void sendMail(JobPost jobPost,String resumeLink) throws MessagingException {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(jobPost.getPosterEmail());
-        message.setText(
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setTo(jobPost.getPosterEmail());
+        helper.setText(
                 "<html>" +
                         "<body border=//'solid black//'>" +
                         "<div style='border-style:solid;border-width:thin;border-color:#dadce0;border-radius:8px;padding:40px 20px'>"+
@@ -173,8 +179,8 @@ public class JobPostServiceImpl implements JobPostService {
                         "<h4>ReferralJobz Team</h4>"+
                         "</div>"+
                         "</body>" +
-                        "</html>");
-        message.setSubject("ReferralJobz Alerts");
+                        "</html>",true);
+        helper.setSubject("ReferralJobz Alerts");
         javaMailSender.send(message);
     }
 }
